@@ -114,15 +114,10 @@ export interface Page {
           link: {
             type?: ('reference' | 'custom') | null;
             newTab?: boolean | null;
-            reference?:
-              | ({
-                  relationTo: 'pages';
-                  value: string | Page;
-                } | null)
-              | ({
-                  relationTo: 'posts';
-                  value: string | Post;
-                } | null);
+            reference?: {
+              relationTo: 'posts';
+              value: string | Post;
+            } | null;
             url?: string | null;
             label: string;
             /**
@@ -354,15 +349,10 @@ export interface CallToActionBlock {
         link: {
           type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: string | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: string | Post;
-              } | null);
+          reference?: {
+            relationTo: 'posts';
+            value: string | Post;
+          } | null;
           url?: string | null;
           label: string;
           /**
@@ -404,15 +394,10 @@ export interface ContentBlock {
         link?: {
           type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: string | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: string | Post;
-              } | null);
+          reference?: {
+            relationTo: 'posts';
+            value: string | Post;
+          } | null;
           url?: string | null;
           label: string;
           /**
@@ -1483,15 +1468,10 @@ export interface Header {
         link: {
           type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: string | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: string | Post;
-              } | null);
+          reference?: {
+            relationTo: 'posts';
+            value: string | Post;
+          } | null;
           url?: string | null;
           label: string;
         };
@@ -1512,15 +1492,10 @@ export interface Footer {
         link: {
           type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: string | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: string | Post;
-              } | null);
+          reference?: {
+            relationTo: 'posts';
+            value: string | Post;
+          } | null;
           url?: string | null;
           label: string;
         };

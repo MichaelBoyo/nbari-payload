@@ -14,6 +14,7 @@ import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { LandingPage } from '../(custom)/feed/page'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -55,6 +56,9 @@ export default async function Page({ params: paramsPromise }: Args) {
   page = await queryPageBySlug({
     slug,
   })
+  if (slug === 'home') {
+    return <LandingPage />
+  }
 
   // Remove this code once your website is seeded
   if (!page && slug === 'home') {
