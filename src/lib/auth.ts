@@ -26,6 +26,25 @@ export const login = async ({ email, password }) => {
     return { message: 'Invalid email or password' }
   }
 }
+
+export const signUp = async ({ email, password, name }) => {
+  try {
+    const payload = await getPayload({ config: configPromise })
+
+    const result = await payload.create({
+      collection: 'users',
+      data: {
+        password: password,
+        email,
+        name,
+      },
+    })
+  } catch (err) {
+    console.error(err)
+    return { error: { message: err.message } }
+  }
+}
+
 export const getAuth = async () => {
   const headers = await nextHeaders()
   const payload = await getPayload({ config: configPromise })

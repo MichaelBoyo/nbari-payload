@@ -29,6 +29,7 @@ import { ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 export default function SignIn() {
   const [globalError, setGlobalError] = useState<string>('')
@@ -51,6 +52,14 @@ export default function SignIn() {
         //@ts-expect-error err
         setGlobalError(result?.message)
       } else {
+        const date = new Date()
+        toast('Login Successfull', {
+          description: date.toLocaleDateString() + ' ' + date.toLocaleTimeString(),
+          action: {
+            label: 'Close',
+            onClick: () => console.log('Close'),
+          },
+        })
         router.push('/')
       }
     } catch (error) {

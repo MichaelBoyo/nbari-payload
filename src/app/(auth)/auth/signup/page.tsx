@@ -24,6 +24,9 @@ import { z } from 'zod'
 import { SIGN_IN } from '@/constants/internal.links'
 import LoadingButton from '@/components/ui/loading-button'
 import ErrorMessage from '@/components/ui/error-message'
+import { signUp } from '@/lib/auth'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 export default function SignUp() {
   const [globalError, setGlobalError] = useState('')
@@ -38,30 +41,24 @@ export default function SignUp() {
     },
   })
 
-  const handleCredentialsSignin = async (values: any) => {
-    return {
-      message: 'Sign in successful',
-    }
-  }
-  const handleSignUp = async (values: any) => {
-    return {
-      success: true,
-      message: 'Account created successfully.',
-    }
-  }
+  const router = useRouter()
 
   const onSubmit = async (values: z.infer<typeof signUpSchema>) => {
     try {
-      const result = await handleSignUp(values)
-      if (result.success) {
-        console.log('Account created successfully.')
-        const valuesForSignin = {
-          email: values.email,
-          password: values.password,
-        }
-        await handleCredentialsSignin(valuesForSignin)
+      const result = await signUp(values)
+      console.log(result)
+      if (!result?.error.message) {
+        const date = new Date()
+        toast('Sign Up Successfull', {
+          description: date.toLocaleDateString() + ' ' + date.toLocaleTimeString(),
+          action: {
+            label: 'Close',
+            onClick: () => console.log('Close'),
+          },
+        })
+        router.push(SIGN_IN)
       } else {
-        setGlobalError(result.message)
+        setGlobalError(formatMessage(result.error.message))
       }
     } catch (error) {
       setGlobalError('An unexpected error occurred. Please try again.')
@@ -176,4 +173,14 @@ export default function SignUp() {
       </Card>
     </div>
   )
+}
+
+const formatMessage = (message: string) => {
+  switch (message) {
+    case 'The following field is invalid: email':
+      return 'Email already registered'
+
+    default:
+      return message
+  }
 }
