@@ -1,6 +1,7 @@
 import { Feed } from '@/components/custom/feed'
 import React from 'react'
 
-export const LandingPage = () => {
+const LandingPage = () => {
   return <Feed />
 }
+export default LandingPage
