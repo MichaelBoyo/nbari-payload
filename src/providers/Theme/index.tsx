@@ -24,12 +24,12 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     if (themeToSet === null) {
       window.localStorage.removeItem(themeLocalStorageKey)
       const implicitPreference = getImplicitPreference()
-      document.documentElement.setAttribute('data-theme', implicitPreference || '')
+      document.documentElement.setAttribute('data-theme', 'light')
       if (implicitPreference) setThemeState(implicitPreference)
     } else {
       setThemeState(themeToSet)
-      window.localStorage.setItem(themeLocalStorageKey, themeToSet)
-      document.documentElement.setAttribute('data-theme', themeToSet)
+      window.localStorage.setItem(themeLocalStorageKey, 'light')
+      document.documentElement.setAttribute('data-theme', 'light')
     }
   }, [])
 
@@ -47,7 +47,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       }
     }
 
-    document.documentElement.setAttribute('data-theme', themeToSet)
+    document.documentElement.setAttribute('data-theme', 'light')
     setThemeState(themeToSet)
   }, [])
 

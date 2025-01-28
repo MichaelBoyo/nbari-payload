@@ -19,14 +19,16 @@ import { Button } from '@/components/ui/button'
 
 import { useState } from 'react'
 
+import ErrorMessage from '@/components/ui/error-message'
+import LoadingButton from '@/components/ui/loading-button'
 import { Separator } from '@/components/ui/separator'
+import { SIGN_UP } from '@/constants/internal.links'
+import { login } from '@/lib/auth'
+import { signInSchema } from '@/lib/zod'
 import { ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { SIGN_UP } from '@/constants/internal.links'
-import { signInSchema } from '@/lib/zod'
-import ErrorMessage from '@/components/ui/error-message'
-import LoadingButton from '@/components/ui/loading-button'
+import { useRouter } from 'next/navigation'
 
 export default function SignIn() {
   const [globalError, setGlobalError] = useState<string>('')
@@ -38,17 +40,18 @@ export default function SignIn() {
       password: '',
     },
   })
-  const handleCredentialsSignin = async (values: any) => {
-    return {
-      message: 'Sign in successful',
-    }
-  }
+  const router = useRouter()
 
   const onSubmit = async (values: z.infer<typeof signInSchema>) => {
     try {
-      const result = await handleCredentialsSignin(values)
+      const result = await login(values)
+      console.log(JSON.stringify(result))
+      //@ts-expect-error err
       if (result?.message) {
-        setGlobalError(result.message)
+        //@ts-expect-error err
+        setGlobalError(result?.message)
+      } else {
+        router.push('/')
       }
     } catch (error) {
       console.log('An unexpected error occurred. Please try again.')
