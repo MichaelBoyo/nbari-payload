@@ -18,6 +18,10 @@ const nextConfig = {
           protocol: url.protocol.replace(':', ''),
         }
       }),
+      {
+        hostname: 'github.com',
+        protocol: 'https',
+      },
     ],
   },
   reactStrictMode: true,
