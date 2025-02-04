@@ -23,6 +23,7 @@ export default function Age() {
       subtitle="We only need this to provide suited content for you"
       onBack={() => router.push('/onboarding/personal-info')}
       onNext={handleNext}
+      nextText="CONTINUE TO COUNTRY"
     >
       <div className="space-y-2">
         <label className="text-sm font-medium">Age</label>

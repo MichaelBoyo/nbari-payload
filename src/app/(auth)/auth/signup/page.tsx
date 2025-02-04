@@ -20,8 +20,8 @@ import { redirect } from 'next/navigation'
 import { formatPayloadMessage } from '@/utilities/format.payload.message'
 
 const formSchema = z.object({
-  email: z.string().min(2, 'First name must be at least 2 characters'),
-  password: z.string().min(2, 'Last name must be at least 2 characters'),
+  email: z.string().min(2, 'email must be at least 2 characters'),
+  password: z.string().min(2, 'password must be at least 2 characters'),
 })
 
 type FormData = z.infer<typeof formSchema>
@@ -112,8 +112,14 @@ export default function ProgressiveForm() {
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <Label htmlFor="password">Password</Label>
-                  <Input id="password" type="text" className="mt-1" {...register('password')} />
+                  {password && <Label htmlFor="password">Password</Label>}
+                  <Input
+                    placeholder="Enter your password"
+                    id="password"
+                    type="text"
+                    className="mt-1"
+                    {...register('password')}
+                  />
                   {errors.password && (
                     <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
                   )}
