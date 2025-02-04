@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 import OnboardingLayout from '@/components/onboarding-layout'
 
 export default function PersonalInfo() {
@@ -51,23 +51,24 @@ export default function PersonalInfo() {
         <div className="space-y-2">
           <label className="text-sm font-medium">Gender</label>
           <div className="flex rounded-md border border-gray-200 relative">
-            <div 
-              className="absolute top-0 bottom-0 bg-primary transition-all duration-300 ease-in-out" 
-              style={{ 
-                width: '33.333%', 
+            <div
+              className="absolute top-0 bottom-0 bg-primary transition-all duration-300 ease-in-out"
+              style={{
+                width: '33.333%',
                 left: `${selectedPosition * 33.333}%`,
-                zIndex: 0
-              }} 
+                zIndex: 0,
+              }}
             />
             <Button
               type="button"
               variant="ghost"
               className={`flex-1 rounded-none transition-colors duration-300 relative z-10 ${
-                gender === 'male' 
-                  ? 'text-primary-foreground' 
-                  : 'text-black hover:text-black/70'
+                gender === 'male' ? 'text-white' : 'text-black hover:text-black/70'
               }`}
-              onClick={() => { setGender('male'); setSelectedPosition(0); }}
+              onClick={() => {
+                setGender('male')
+                setSelectedPosition(0)
+              }}
             >
               Male
             </Button>
@@ -76,11 +77,12 @@ export default function PersonalInfo() {
               type="button"
               variant="ghost"
               className={`flex-1 rounded-none transition-colors duration-300 relative z-10 ${
-                gender === 'female' 
-                  ? 'text-primary-foreground' 
-                  : 'text-black hover:text-black/70'
+                gender === 'female' ? 'text-primary-foreground' : 'text-black hover:text-black/70'
               }`}
-              onClick={() => { setGender('female'); setSelectedPosition(1); }}
+              onClick={() => {
+                setGender('female')
+                setSelectedPosition(1)
+              }}
             >
               Female
             </Button>
@@ -89,11 +91,14 @@ export default function PersonalInfo() {
               type="button"
               variant="ghost"
               className={`flex-1 rounded-none transition-colors duration-300 relative z-10 ${
-                gender === 'prefer-not-to-say' 
-                  ? 'text-primary-foreground' 
+                gender === 'prefer-not-to-say'
+                  ? 'text-primary-foreground'
                   : 'text-black hover:text-black/70'
               }`}
-              onClick={() => { setGender('prefer-not-to-say'); setSelectedPosition(2); }}
+              onClick={() => {
+                setGender('prefer-not-to-say')
+                setSelectedPosition(2)
+              }}
             >
               Prefer not to say
             </Button>
@@ -103,4 +108,3 @@ export default function PersonalInfo() {
     </OnboardingLayout>
   )
 }
-

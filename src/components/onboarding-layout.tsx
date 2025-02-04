@@ -31,7 +31,7 @@ export default function OnboardingLayout({
           {showLogo && (
             <div className="flex justify-center">
               <Image
-                src="/nbari-logo.svg"
+                src="/logo.svg"
                 alt="Nbari Logo"
                 width={100}
                 height={40}

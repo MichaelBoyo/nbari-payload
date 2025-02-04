@@ -13,20 +13,20 @@ import { Input } from '@/components/ui/input'
 import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
+import ErrorMessage from '@/components/ui/error-message'
+import LoadingButton from '@/components/ui/loading-button'
 import { Separator } from '@/components/ui/separator'
+import { ONBOARDING_PERSONAL_INFO, SIGN_IN } from '@/constants/internal.links'
+import { login, signUp } from '@/lib/auth'
 import { signUpSchema } from '@/lib/zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ChevronRight } from 'lucide-react'
+import { ArrowRight, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { SIGN_IN } from '@/constants/internal.links'
-import LoadingButton from '@/components/ui/loading-button'
-import ErrorMessage from '@/components/ui/error-message'
-import { signUp } from '@/lib/auth'
 import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import { z } from 'zod'
 
 export default function SignUp() {
   const [globalError, setGlobalError] = useState('')
@@ -40,6 +40,7 @@ export default function SignUp() {
       confirmPassword: '',
     },
   })
+  const [list, setList] = useState([{ name: 'email', placeHolder: 'Let’s start with your Email' }])
 
   const router = useRouter()
 
@@ -56,7 +57,8 @@ export default function SignUp() {
             onClick: () => console.log('Close'),
           },
         })
-        router.push(SIGN_IN)
+        await login(values)
+        router.push(ONBOARDING_PERSONAL_INFO)
       } else {
         setGlobalError(formatMessage(result.error.message))
       }
@@ -67,7 +69,7 @@ export default function SignUp() {
 
   return (
     <div className="min-h-screen bg-[#f2f2f2] flex items-center justify-center p-4">
-      <Card className="w-full max-w-[500px] min-h-[680px] shadow-md relative rounded-2xl flex flex-col">
+      <Card className="w-full max-w-[500px] min-h-[680px] shadow-md bg-white relative rounded-2xl flex flex-col">
         <CardContent className="p-12 pb-[77px] space-y-8 flex-grow">
           {/* Logo */}
           <div className="flex justify-center">
@@ -82,35 +84,41 @@ export default function SignUp() {
 
           {/* Header */}
           <div className="space-y-1 text-left">
-            <p className="text-xs text-gray-600 tracking-widest uppercase mb-2">Sign Up</p>
+            <p className="text-xs text-success font-[600] tracking-widest uppercase mb-2">
+              Sign Up
+            </p>
             <h1 className="text-2xl font-semibold tracking-tight text-gray-900">
-              Create your account
+              Get your Passport
             </h1>
-            <p className="text-sm text-gray-500">Join the community and start learning</p>
+            <p className="text-sm text-gray-500">
+              Get started to have access to the village/community, there’s a lot to explore.
+            </p>
           </div>
 
           {/* Signup Form */}
           {globalError && <ErrorMessage error={globalError} />}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              {['name', 'email', 'password', 'confirmPassword'].map((field) => (
+              {list.map((field) => (
                 <FormField
                   control={form.control}
-                  key={field}
-                  name={field as keyof z.infer<typeof signUpSchema>}
+                  key={field.name}
+                  name={field.name as keyof z.infer<typeof signUpSchema>}
                   render={({ field: fieldProps }) => (
                     <FormItem>
-                      <FormLabel>{field.charAt(0).toUpperCase() + field.slice(1)}</FormLabel>
+                      {/* <FormLabel>
+                        {field.name.charAt(0).toUpperCase() + field.name.slice(1)}
+                      </FormLabel> */}
                       <FormControl>
                         <Input
                           type={
-                            field.includes('password')
+                            field.name.includes('password')
                               ? 'password'
-                              : field === 'email'
+                              : field.name === 'email'
                                 ? 'email'
                                 : 'text'
                           }
-                          placeholder={`Enter your ${field}`}
+                          placeholder={field.placeHolder}
                           {...fieldProps}
                           autoComplete="off"
                         />
@@ -120,7 +128,10 @@ export default function SignUp() {
                   )}
                 />
               ))}
-              <LoadingButton pending={form.formState.isSubmitting}>Sign up</LoadingButton>
+              <LoadingButton pending={form.formState.isSubmitting}>
+                CONTINUE
+                <ArrowRight size={14} />
+              </LoadingButton>
             </form>
           </Form>
           {/* Divider */}
@@ -128,8 +139,8 @@ export default function SignUp() {
             <div className="absolute inset-0 flex items-center">
               <Separator className="w-full" />
             </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-2 text-gray-500">or</span>
+            <div className="relative flex justify-center text-xs ">
+              <span className="bg-white px-2 text-gray-500">or continue with</span>
             </div>
           </div>
 
@@ -154,8 +165,12 @@ export default function SignUp() {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                 />
               </svg>
-              Continue with Google
+              Google
             </Button>
+            <p className="text-gray-400 text-[12px]">
+              by clicking ‘continue’ or ‘continue with Google’ you have agreed to the terms and
+              condition and privacy policy of Nbari
+            </p>
           </div>
 
           {/* Sign In Link */}
@@ -163,11 +178,15 @@ export default function SignUp() {
             href={SIGN_IN}
             className="group absolute bottom-0 left-0 right-0 bg-[#F5F5F5] p-4 text-sm h-[65px] flex items-center justify-between rounded-b-2xl hover:bg-gray-100 transition-colors duration-200"
           >
-            <div className="flex-1 text-left">
-              <span className="text-gray-500">Already have an account?</span>{' '}
-              <span className="text-black font-semibold group-hover:underline">Sign in</span>
+            <div className="flex-1 text-left uppercase text-[14px]">
+              <span className="text-gray-500">If you have a account,</span>{' '}
+              <span className="text-black  group-hover:underline">Sign in</span>
             </div>
-            <ChevronRight className="h-5 w-5 text-black transform transition-transform duration-200 group-hover:translate-x-1" />
+            <ChevronRight
+              size={14}
+              strokeWidth={3}
+              className=" text-black transform transition-transform duration-200 group-hover:translate-x-1"
+            />
           </Link>
         </CardContent>
       </Card>

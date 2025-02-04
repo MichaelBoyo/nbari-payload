@@ -44,7 +44,7 @@
 
     --radius: 0.2rem;
 
-    --success: 196 52% 74%;
+    --success: 152, 100%, 30%, 1;
     --warning: 34 89% 85%;
     --error: 10 100% 86%;
   }
