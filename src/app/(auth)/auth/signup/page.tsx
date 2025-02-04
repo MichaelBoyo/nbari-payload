@@ -27,6 +27,7 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
+import { formatPayloadMessage } from '@/utilities/format.payload.message'
 
 export default function SignUp() {
   const [globalError, setGlobalError] = useState('')
@@ -60,7 +61,7 @@ export default function SignUp() {
         await login(values)
         router.push(ONBOARDING_PERSONAL_INFO)
       } else {
-        setGlobalError(formatMessage(result.error.message))
+        setGlobalError(formatPayloadMessage(result.error.message))
       }
     } catch (error) {
       setGlobalError('An unexpected error occurred. Please try again.')
@@ -192,14 +193,4 @@ export default function SignUp() {
       </Card>
     </div>
   )
-}
-
-const formatMessage = (message: string) => {
-  switch (message) {
-    case 'The following field is invalid: email':
-      return 'Email already registered'
-
-    default:
-      return message
-  }
 }
