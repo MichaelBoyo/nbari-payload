@@ -38,7 +38,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   ]
 
   return (
-    <header className="md:container md:max-w-2xl w-full  z-20 shadow-2xl rounded-2xl">
+    <header className="md:container bg-white sticky top-0 md:max-w-2xl w-full  z-20 shadow-2xl rounded-2xl">
       <div className=" flex justify-between w-full">
         {links.slice(0, 2).map((link, idx) => (
           <Link key={idx} className="flex flex-col items-center  " href={link.href}>

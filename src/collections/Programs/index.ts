@@ -24,8 +24,8 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 
-export const Courses: CollectionConfig<'courses'> = {
-  slug: 'courses',
+export const Programs: CollectionConfig<'programs'> = {
+  slug: 'programs',
   access: {
     create: admin,
     delete: admin,
@@ -54,6 +54,16 @@ export const Courses: CollectionConfig<'courses'> = {
       name: 'title',
       type: 'text',
       required: true,
+    },
+    {
+      name: 'categories',
+      type: 'relationship',
+
+      admin: {
+        position: 'sidebar',
+      },
+      hasMany: true,
+      relationTo: 'categories',
     },
     {
       type: 'tabs',
@@ -89,32 +99,15 @@ export const Courses: CollectionConfig<'courses'> = {
         {
           fields: [
             {
-              name: 'relatedCourses',
+              name: 'courses',
               type: 'relationship',
-              admin: {
-                position: 'sidebar',
-              },
-              filterOptions: ({ id }) => {
-                return {
-                  id: {
-                    not_in: [id],
-                  },
-                }
-              },
+
               hasMany: true,
+
               relationTo: 'courses',
             },
-            {
-              name: 'categories',
-              type: 'relationship',
-              admin: {
-                position: 'sidebar',
-              },
-              hasMany: true,
-              relationTo: 'categories',
-            },
           ],
-          label: 'Meta',
+          label: 'Courses',
         },
         {
           name: 'meta',
@@ -174,9 +167,7 @@ export const Courses: CollectionConfig<'courses'> = {
       hasMany: true,
       relationTo: 'users',
     },
-    // This field is only used to populate the user data via the `populateAuthors` hook
-    // This is because the `user` collection has access control locked to protect user privacy
-    // GraphQL will also not return mutated user data that differs from the underlying schema
+
     {
       name: 'registeredUsers',
       type: 'array',

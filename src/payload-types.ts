@@ -17,6 +17,7 @@ export interface Config {
     categories: Category;
     users: User;
     courses: Course;
+    programs: Program;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -34,6 +35,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     courses: CoursesSelect<false> | CoursesSelect<true>;
+    programs: ProgramsSelect<false> | ProgramsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -693,10 +695,59 @@ export interface Course {
   };
   publishedAt?: string | null;
   authors?: (number | User)[] | null;
-  populatedAuthors?:
+  registeredUsers?:
     | {
         id?: string | null;
         name?: string | null;
+        image?: string | null;
+      }[]
+    | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "programs".
+ */
+export interface Program {
+  id: number;
+  title: string;
+  categories?: (number | Category)[] | null;
+  heroImage?: (number | null) | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  courses?: (number | Course)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  authors?: (number | User)[] | null;
+  registeredUsers?:
+    | {
+        id?: string | null;
+        name?: string | null;
+        image?: string | null;
       }[]
     | null;
   slug?: string | null;
@@ -900,6 +951,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'courses';
         value: number | Course;
+      } | null)
+    | ({
+        relationTo: 'programs';
+        value: number | Program;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1278,11 +1333,44 @@ export interface CoursesSelect<T extends boolean = true> {
       };
   publishedAt?: T;
   authors?: T;
-  populatedAuthors?:
+  registeredUsers?:
     | T
     | {
         id?: T;
         name?: T;
+        image?: T;
+      };
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "programs_select".
+ */
+export interface ProgramsSelect<T extends boolean = true> {
+  title?: T;
+  categories?: T;
+  heroImage?: T;
+  content?: T;
+  courses?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  publishedAt?: T;
+  authors?: T;
+  registeredUsers?:
+    | T
+    | {
+        id?: T;
+        name?: T;
+        image?: T;
       };
   slug?: T;
   slugLock?: T;
@@ -1657,6 +1745,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'courses';
           value: number | Course;
+        } | null)
+      | ({
+          relationTo: 'programs';
+          value: number | Program;
         } | null);
     global?: string | null;
     user?: (number | null) | User;
