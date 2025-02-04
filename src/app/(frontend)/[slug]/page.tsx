@@ -14,7 +14,7 @@ import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
-import LandingPage from '../(custom)/feed/page'
+import LandingPage from '../feed/page'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
